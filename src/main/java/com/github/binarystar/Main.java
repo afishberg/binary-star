@@ -1,14 +1,16 @@
+package com.github.binarystar;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
-public class MyProcessingSketch extends PApplet {
+public class Main extends PApplet {
 
 	Ship ship;
 	
 	public static void main(String args[]) {
-		//PApplet.main(new String[] { "--present", "MyProcessingSketch" }); // set to fullscreen
-		PApplet.main(new String[] { "MyProcessingSketch" });
+		//PApplet.main(new String[] { "--present", "com.github.binarystar.Main" }); // set to fullscreen
+		PApplet.main(new String[] { "com.github.binarystar.Main" });
 	}
 	
 	public void setup() {
@@ -16,7 +18,7 @@ public class MyProcessingSketch extends PApplet {
 		frameRate(30);
 		
 		// load sprite
-		PImage sprite = loadImage("sprite.png");
+		PImage sprite = loadImage("assets/sprite.png");
 
 		ship = new Ship(sprite, 500, 500);
 	}
