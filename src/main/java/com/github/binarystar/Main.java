@@ -1,12 +1,21 @@
 package com.github.binarystar;
 
+import com.github.binarystar.engine.*;
+
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.core.PVector;
+
+import java.util.*;
 
 public class Main extends PApplet {
 
-	Ship ship;
+	public static final int WIDTH = 1000;
+	public static final int HEIGHT = 1000;
+	public static final int FRAME_RATE = 60; // u filthy pleb
+	
+	public static ArrayList<Entity> entities = new ArrayList<Entity>();
+	
+	Ship ship1, ship2;
 	
 	public static void main(String args[]) {
 		//PApplet.main(new String[] { "--present", "com.github.binarystar.Main" }); // set to fullscreen
@@ -15,121 +24,83 @@ public class Main extends PApplet {
 	
 	public void setup() {
 		background(0);
-		frameRate(30);
-		
-		// load sprite
-		PImage sprite = loadImage("assets/sprite.png");
+		frameRate(FRAME_RATE);
 
-		ship = new Ship(sprite, 500, 500);
+		PImage sprite = loadImage("assets/sprite.png");
+		
+		ship1 = new Ship(sprite, 300, 500);
+		ship2 = new Ship(sprite, 700, 500);
+		entities.add(ship1);
+		entities.add(ship2);
 	}
 	
 	public void settings() {
-		size(1000,1000);
+		size(WIDTH, HEIGHT);
 	}
 
 	int count = 0;
 	final int WRAP_AROUND = 8;
 	
 	public void draw() {
+		// TODO: probably separate from draw logic
+		{
+			for (Entity e : entities) {
+				e.update(1f/FRAME_RATE);
+			}
+		}
+		
 		// redraw background
 		background(0);
 
-		// debugging output
-		if (count++ >= frameRate * 5) {
-			println(ship.pos);
-			count = 0;
+		// Iterate through our entity list and draw everything
+		for (Entity e : entities) {
+			SpriteRenderer s = e.getComponent(SpriteRenderer.class);
+			
+			// draw with Processing
+			pushMatrix();
+			translate(s.x, s.y);
+			rotate(s.rot);
+			tint(s.r, s.g, s.b, s.a);
+			image(s.sprite, -s.sprite.width / 2, -s.sprite.height / 2);
+			popMatrix();
 		}
-		
-		// game logic
-		ship.update();
-		
-		// draw lines
-		stroke(255);
-		line(0, 500, 1000, 500);
-		line(500, 0, 500, 1000);
-		
-		// draw ship
-		pushMatrix();
-		translate(ship.pos.x, ship.pos.y);
-		rotate(ship.dir);
-		image(ship.sprite, -ship.sprite.width / 2, -ship.sprite.height / 2);
-		popMatrix();
-		
-		
-		// wrap around
-		if (ship.pos.x > width + width / WRAP_AROUND) {
-			ship.pos = new PVector( -width / WRAP_AROUND , ship.pos.y);
-		} else if (ship.pos.x < -width / WRAP_AROUND) {
-			ship.pos = new PVector(width + width / WRAP_AROUND , ship.pos.y);
-		}
-		
-		if (ship.pos.y > height + height / WRAP_AROUND) {
-			ship.pos = new PVector(ship.pos.x , -height / WRAP_AROUND);
-		} else if (ship.pos.y < -height / WRAP_AROUND) {
-			ship.pos = new PVector(ship.pos.x , height + height / WRAP_AROUND);
-		}
-		
-		
 	}
 	
+	// Input stuff
 	public void keyPressed() {
-		switch (key) {
-		case 'w':
-			ship.accel();
-			break;
-		case 'a':
-			ship.rotCCW();
-			break;
-		case 's':
-			ship.decel();
-			break;
-		case 'd':
-			ship.rotCW();
-			break;
-		case ' ':
-			ship.breaks();
-			break;
-		default:
-			break;
-		}
+		InputManager.keyPressed(key);
+	}
+	public void keyReleased() {
+		InputManager.keyReleased(key);
+	}
+	public void mousePressed() {
+		InputManager.mousePressed();
+	}
+	public void mouseReleased() {
+		InputManager.mouseReleased();
+	}
+	public void mouseMoved() {
+		InputManager.mouseX = mouseX;
+		InputManager.mouseY = mouseY;
 	}
 	
-	
-	public static class Ship {
-		PImage sprite;
-		PVector pos, vel;
-		float dir;
+	// Ship class with a transform, sprite, and controls component
+	public static class Ship extends Entity {
+
+		Transform transform;
 		
 		public Ship(PImage sprite, int x, int y) {
-			this.sprite = sprite;
-			pos = new PVector(x,y);
-			vel = new PVector(0,0);
-			dir = radians(-90);
+			super();
+			
+			addComponent(new SpriteRenderer(sprite));
+			addComponent(new ShipControls());
+			// (Transform added automatically)
+			
+			init();
+			
+			this.transform = getComponent(Transform.class);
+			transform.position.x = x;
+			transform.position.y = y;
 		}
-		
-		public void update() {
-			pos = pos.add(vel);
-		}
-		
-		public void rotCW() {
-			dir += radians(1);
-		}
-		
-		public void rotCCW() {
-			dir -= radians(1);
-		}
-		
-		public void accel() {
-			vel = vel.add(PVector.fromAngle(dir).div(10));
-		}
-		
-		public void decel() {
-			vel = vel.sub(PVector.fromAngle(dir).div(10));
-		}
-		
-		public void breaks() {
-			vel = vel.mult(0.8f);
-		}
-		
 	}
 }
