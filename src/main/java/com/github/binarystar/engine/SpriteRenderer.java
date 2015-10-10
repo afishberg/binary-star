@@ -1,12 +1,13 @@
 package com.github.binarystar.engine;
 
+import com.github.binarystar.Main;
+
 import processing.core.PImage;
 
 public class SpriteRenderer extends Component {
 
 	public Transform transform;	// Transform component used to find drawing position/rotation
 	public PImage sprite;		// Image to draw
-	public float x, y, rot;		// Actual transform values that are rendered
 	public int r, g, b, a;		// Tint values
 	
 	public SpriteRenderer(PImage sprite) {
@@ -18,14 +19,17 @@ public class SpriteRenderer extends Component {
 		this.transform = entity.getComponent(Transform.class);
 	}
 	
-	public void update(float deltaTime) {
-		if (transform == null){
-			System.err.println("No transform component found");
-			return;
-		}
-		x = transform.position.x;
-		y = transform.position.y;
-		rot = transform.rotation;
+	public void update(float deltaTime) { }
+	
+	public void render() {
+		// draw with Processing
+		Main.Processing.pushMatrix();
+		Main.Processing.translate(transform.position.x, transform.position.y);
+		Main.Processing.rotate(transform.rotation);
+		Main.Processing.scale(transform.scale.x, transform.scale.y);
+		Main.Processing.tint(r, g, b, a);
+		Main.Processing.image(sprite, -sprite.width / 2, -sprite.height / 2);
+		Main.Processing.popMatrix();
 	}
 	
 }

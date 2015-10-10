@@ -40,12 +40,11 @@ public class ShipControls extends Component {
 		
 		// Select clicked ship
 		if (InputManager.isMousePressed()) {
-			// TODO: Take rotation into account
-			selected = Math.abs(InputManager.mouseX - renderer.x) < renderer.sprite.width / 2 &&
-					   Math.abs(InputManager.mouseY - renderer.y) < renderer.sprite.height / 2;
+			// TODO: Take rotation and scale into account
+			selected = Math.abs(InputManager.mouseX - transform.position.x) < renderer.sprite.width / 2 &&
+					   Math.abs(InputManager.mouseY - transform.position.y) < renderer.sprite.height / 2;
 		}
 		renderer.a = selected ? 255 : 150;
-		System.out.println(renderer.a + " " + selected);
 		
 		// Move selected ships with keyboard
 		if (selected) {
