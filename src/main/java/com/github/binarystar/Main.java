@@ -1,7 +1,6 @@
 package com.github.binarystar;
 
 import com.github.binarystar.engine.*;
-
 import processing.core.PApplet;
 
 public class Main extends PApplet {
@@ -37,9 +36,6 @@ public class Main extends PApplet {
 	public void settings() {
 		size(WIDTH, HEIGHT);
 	}
-
-	int count = 0;
-	final int WRAP_AROUND = 8;
 	
 	public void draw() {
 		float dt = System.nanoTime()/1000000000f - prevTime;

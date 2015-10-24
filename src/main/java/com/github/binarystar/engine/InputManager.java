@@ -20,6 +20,22 @@ public class InputManager {
 	public static boolean isMousePressed() {
 		return mouse;
 	}
+
+	// Mouse position relative to other entities
+	public static float mouseWorldSpaceX(Camera c) {
+		return (mouseX + (int)c.cameraTransform.position.x) / c.cameraTransform.scale.x;
+	}
+	public static float mouseWorldSpaceY(Camera c) {
+		return (mouseY + (int)c.cameraTransform.position.y) / c.cameraTransform.scale.y;
+	}
+	
+	// Mouse position relative to window
+	public static float mouseScreenSpaceX() {
+		return mouseX;
+	}
+	public static float mouseScreenSpaceY() {
+		return mouseY;
+	}
 	
 	//
 	// Called from Processing stuff to update values

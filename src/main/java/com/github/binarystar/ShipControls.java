@@ -23,26 +23,30 @@ public class ShipControls extends Component {
 	public void update(float deltaTime) {
 		
 		// Wrap screen bounds
-		int width = Main.WIDTH;
-		int height = Main.HEIGHT;
+		float right = Main.CurrentScreen.mainCamera.CameraRight();
+		float bottom = Main.CurrentScreen.mainCamera.CameraBottom();
+		float left = Main.CurrentScreen.mainCamera.CameraLeft();
+		float top = Main.CurrentScreen.mainCamera.CameraTop();
 		
-		if (transform.position.x > width + width / 8) {
-			transform.position = new PVector( -width / 8 , transform.position.y);
-		} else if (transform.position.x < -width / 8) {
-			transform.position = new PVector(width + width / 8 , transform.position.y);
+		if (transform.position.x > right + 100) {
+			transform.position = new PVector(left - 100, transform.position.y);
+		} else if (transform.position.x < left - 100) {
+			transform.position = new PVector(right + 100, transform.position.y);
 		}
 		
-		if (transform.position.y > height + height / 8) {
-			transform.position = new PVector(transform.position.x , -height / 8);
-		} else if (transform.position.y < -height / 8) {
-			transform.position = new PVector(transform.position.x , height + height / 8);
+		if (transform.position.y > bottom + 100) {
+			transform.position = new PVector(transform.position.x , top - 100);
+		} else if (transform.position.y < top - 100) {
+			transform.position = new PVector(transform.position.x , bottom + 100);
 		}
 		
 		// Select clicked ship
 		if (InputManager.isMousePressed()) {
-			// TODO: Take rotation and scale into account
-			selected = Math.abs(InputManager.mouseX - transform.position.x) < renderer.sprite.width / 2 &&
-					   Math.abs(InputManager.mouseY - transform.position.y) < renderer.sprite.height / 2;
+			// TODO: Take rotation and scale of ship into account
+			float mouseX = InputManager.mouseWorldSpaceX(Main.CurrentScreen.mainCamera);
+			float mouseY = InputManager.mouseWorldSpaceY(Main.CurrentScreen.mainCamera);
+			selected = Math.abs(mouseX - transform.position.x) < renderer.sprite.width / 2 &&
+					   Math.abs(mouseY - transform.position.y) < renderer.sprite.height / 2;
 		}
 		renderer.a = selected ? 255 : 150;
 		

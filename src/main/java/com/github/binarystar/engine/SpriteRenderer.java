@@ -22,6 +22,9 @@ public class SpriteRenderer extends Component {
 	public void update(float deltaTime) { }
 	
 	public void render() {
+		if (transform == null)
+			System.err.println("Transform not found on " + this.toString() + "; you may not have called init() on the entity after adding components to it.");
+
 		// draw with Processing
 		Main.Processing.pushMatrix();
 		Main.Processing.translate(transform.position.x, transform.position.y);
