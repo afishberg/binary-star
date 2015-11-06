@@ -11,6 +11,7 @@ public class Main extends PApplet {
 
 	public static PApplet Processing;
 	public static GameScreen CurrentScreen;
+	public static CollisionManager Collisions;
 
 	private static float prevTime;
 	
@@ -30,6 +31,7 @@ public class Main extends PApplet {
 		frameRate(FRAME_RATE);
 		
 		// Load initial screen
+		Collisions = new CollisionManager();
 		CurrentScreen = new TestScreen();
 	}
 	

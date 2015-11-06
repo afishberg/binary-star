@@ -5,7 +5,7 @@ public abstract class Component {
 	/**
 	 * The entity that the componenet will be attached to
 	 */
-	protected Entity entity;
+	public Entity entity;
 	
 	/**
 	 * Assign necessary references
@@ -25,4 +25,9 @@ public abstract class Component {
 	 * @param deltaTime The time in seconds since the last call
 	 */
 	public abstract void update(float deltaTime);
+	
+	/**
+	 * Called every frame for drawing
+	 */
+	public void render() { }
 }

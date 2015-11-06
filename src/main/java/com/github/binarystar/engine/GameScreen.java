@@ -9,7 +9,6 @@ public class GameScreen {
 	public ArrayList<Entity> entities;
 	public ArrayList<Entity> uiElements;
 	public Camera mainCamera;
-	
 	private Transform cameraTransform;
 	
 	public GameScreen() {
@@ -24,6 +23,7 @@ public class GameScreen {
 		for (Entity e : entities) {
 			e.update(deltaTime);
 		}
+		Main.Collisions.update();
 		for (Entity e : uiElements) {
 			e.update(deltaTime);
 		}
@@ -44,9 +44,7 @@ public class GameScreen {
 			Main.Processing.rotate(-cameraTransform.rotation);
 			
 			// Render other entities
-			SpriteRenderer s = e.getComponent(SpriteRenderer.class);
-			if (s != null)
-				s.render();
+			e.render();
 			
 			Main.Processing.popMatrix();
 		}

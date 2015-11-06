@@ -4,14 +4,14 @@ import com.github.binarystar.engine.*;
 
 import processing.core.PVector;
 
-public class ShipControls extends Component {
+public class ShipMovement extends Component {
 
 	private Transform transform;
 	private SpriteRenderer renderer;
 	
 	private boolean selected;
 	
-	public ShipControls() {
+	public ShipMovement() {
 		selected = false;
 	}
 	
@@ -53,20 +53,60 @@ public class ShipControls extends Component {
 		// Move selected ships with keyboard
 		if (selected) {
 			if (InputManager.isKeyPressed('d')) {
-				transform.rotation += 1 / Math.PI / 4;
+				engineCW();
 			}
 			if (InputManager.isKeyPressed('a')) {
-				transform.rotation -= 1 / Math.PI / 4;
+				engineCCW();
 			}
 			if (InputManager.isKeyPressed('w')) {
-				transform.velocity.add(PVector.fromAngle(transform.rotation).mult(10));
+				engineForward();
 			}
 			if (InputManager.isKeyPressed('s')) {
-				transform.velocity.sub(PVector.fromAngle(transform.rotation).mult(10));
+				engineReverse();
 			}
 			if (InputManager.isKeyPressed(' ')) {
-				transform.velocity.mult(0.8f);
+				engineBrake();
 			}
 		}
+	}
+	
+	public void engine(String action){
+		switch (action) {
+		case "FORWARD":
+			engineForward();
+			break;
+		case "REVERSE":
+			engineReverse();
+			break;
+		case "BRAKE":
+			engineBrake();
+			break;
+		case "CW":
+			engineCW();
+			break;
+		case "CCW":
+			engineCCW();
+			break;
+		}
+	}
+	
+	public void engineForward() {
+		transform.velocity.add(PVector.fromAngle(transform.rotation).mult(10));
+	}
+	
+	public void engineReverse() {
+		transform.velocity.sub(PVector.fromAngle(transform.rotation).mult(10));
+	}
+	
+	public void engineBrake() {
+		transform.velocity.mult(0.8f);
+	}
+	
+	public void engineCW() {
+		transform.rotation += 1 / Math.PI / 4;
+	}
+	
+	public void engineCCW() {
+		transform.rotation -= 1 / Math.PI / 4;
 	}
 }
