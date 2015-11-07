@@ -5,8 +5,8 @@ import processing.core.PApplet;
 
 public class Main extends PApplet {
 
-	public static final int WIDTH = 1000;
-	public static final int HEIGHT = 1000;
+	public static final int WIDTH = 1280;
+	public static final int HEIGHT = 720;
 	public static final int FRAME_RATE = 60; // u filthy pleb
 
 	public static PApplet Processing;
@@ -15,7 +15,7 @@ public class Main extends PApplet {
 
 	private static float prevTime;
 	
-	public Main(){
+	public Main() {
 		Processing = this;
 	}
 	
@@ -29,9 +29,9 @@ public class Main extends PApplet {
 		prevTime = System.nanoTime()/1000000000f;
 		background(0);
 		frameRate(FRAME_RATE);
+		Collisions = new CollisionManager();
 		
 		// Load initial screen
-		Collisions = new CollisionManager();
 		CurrentScreen = new TestScreen();
 	}
 	

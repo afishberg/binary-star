@@ -1,7 +1,7 @@
 package com.github.binarystar;
 
 import com.github.binarystar.engine.*;
-import processing.core.PImage;
+import processing.core.*;
 
 public class TestScreen extends GameScreen {
 	
@@ -12,8 +12,8 @@ public class TestScreen extends GameScreen {
 		PImage sprite = Main.Processing.loadImage("assets/sprite.png");
 		PImage ui = Main.Processing.loadImage("assets/minimap_temp.png");
 		
-		Ship ship1 = new Ship(sprite, 300, 500);
-		Ship ship2 = new Ship(sprite, 700, 500);
+		Ship ship1 = new Ship(sprite, 300, 500, "1");
+		Ship ship2 = new Ship(sprite, 700, 500, "2");
 		entities.add(ship1);
 		entities.add(ship2);
 		
@@ -25,43 +25,8 @@ public class TestScreen extends GameScreen {
 		stupidUI.getComponent(SpriteRenderer.class).a = 100;
 		uiElements.add(stupidUI);
 		stupidUI.init();
+		
+		mainCamera.cameraTransform.scale = new PVector(0.75f, 0.75f);
 	}
 
-	// Ship class with a transform, sprite, and controls component
-	public static class Ship extends Entity {
-
-		Transform transform;
-		
-		public Ship(PImage sprite, int x, int y) {
-			super();
-			
-			addComponent(new SpriteRenderer(sprite));
-			addComponent(new ShipMovement());
-			addComponent(new HitBox(0, 0, sprite.width-50, sprite.height-80, "ship"));
-			addComponent(new HitBox(sprite.width, 0, sprite.width, sprite.height, "sensor"));
-			// (Transform added automatically)
-			
-			init();
-			
-			this.transform = getComponent(Transform.class);
-			transform.position.x = x;
-			transform.position.y = y;
-		}
-		
-		@Override
-		public void onCollision(HitBox thisBox, HitBox otherBox) {
-			if (otherBox.tag.equals("ship") && thisBox.tag.equals("ship")) {
-				// KABOOM
-				this.destroy();
-				otherBox.entity.destroy();
-				
-			} else if (thisBox.tag.equals("sensor")) {
-				if (otherBox.tag.equals("ship")) {
-					// Found a ship! Make it blink
-					SpriteRenderer r = otherBox.entity.getComponent(SpriteRenderer.class);
-					r.g = ~r.g;
-				}
-			}
-		}
-	}
 }

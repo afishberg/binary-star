@@ -41,7 +41,7 @@ public class Entity {
 	 * Updates all components attached to the entity
 	 * @param deltaTime The tick length
 	 */
-	public final void update(float deltaTime) {
+	public void update(float deltaTime) {
 		// Update components
 		for (Component c : components) {
 			c.update(deltaTime);

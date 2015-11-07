@@ -12,13 +12,17 @@ public class GameScreen {
 	
 	private Transform cameraTransform;
 	private ArrayList<Entity> removeEntities;
+	private ArrayList<Entity> addEntities;
+	private ArrayList<Entity> addUI;
 	
 	public GameScreen() {
 		mainCamera = new Camera();
 		cameraTransform = mainCamera.getComponent(Transform.class);
 		entities = new ArrayList<Entity>();
+		addEntities = new ArrayList<Entity>();
 		removeEntities = new ArrayList<Entity>();
 		uiElements = new ArrayList<Entity>();
+		addUI = new ArrayList<Entity>();
 	}
 	
 	public void update(float deltaTime) {
@@ -32,12 +36,30 @@ public class GameScreen {
 			e.update(deltaTime);
 		}
 		
+		// Add entities queued for creation
+		for (Entity e : addEntities) {
+			entities.add(e);
+		}
+		addEntities.clear();
+		for (Entity e : addUI) {
+			uiElements.add(e);
+		}
+		addUI.clear();
+		
 		// Remove entities marked for deletion
 		for (Entity e : removeEntities) {
 			entities.remove(e);
 			uiElements.remove(e);
 		}
 		removeEntities.clear();
+	}
+	
+	public void createEntity(Entity e) {
+		addEntities.add(e);
+	}
+	
+	public void createUIElement(Entity e) {
+		addUI.add(e);
 	}
 	
 	public void destroyEntity(Entity e) {
