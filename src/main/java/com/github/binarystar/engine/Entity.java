@@ -2,6 +2,8 @@ package com.github.binarystar.engine;
 
 import java.util.*;
 
+import com.github.binarystar.Main;
+
 public class Entity {
 	private ArrayList<Component> components;
 
@@ -23,6 +25,16 @@ public class Entity {
 		for (Component c : components) {
 			c.start();
 		}
+	}
+	
+	/**
+	 * Destroys all attached components and removes the Entity from current screen's entity list
+	 */
+	public void destroy() {
+		for (Component c : components) {
+			c.destroy();
+		}
+		Main.CurrentScreen.destroyEntity(this);
 	}
 	
 	/**

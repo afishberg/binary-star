@@ -25,6 +25,10 @@ public class HitBox extends Component {
 		this.transform = entity.getComponent(Transform.class);
 		Main.Collisions.add(this);
 	}
+	
+	public void destroy() {
+		Main.Collisions.remove(this);
+	}
 
 	public void update(float deltaTime) {
 		PVector off = new PVector(offsetX * (float)Math.cos(transform.rotation) 
@@ -34,6 +38,7 @@ public class HitBox extends Component {
 		box.updateTransform(PVector.add(transform.position, off), transform.rotation);
 	}
 	
+	// Uses separating axis theorem to test for whether two HitBoxes overlap
 	public boolean intersect(HitBox other) {
 		Rectangle r1 = this.box;
 		Rectangle r2 = other.box;
@@ -61,7 +66,6 @@ public class HitBox extends Component {
 		return p1[0]>=p2[0] && p1[0]<=p2[1] || p2[0]>=p1[0] && p2[0]<=p1[1];
 	}
 	
-	/*
 	public void render() {
 		// Debug drawing each rectangle point
 		Main.Processing.pushMatrix();
@@ -71,7 +75,6 @@ public class HitBox extends Component {
 		Main.Processing.ellipse(box.vertices[3].x, box.vertices[3].y, 10, 10);
 		Main.Processing.popMatrix();
 	}
-	*/
 	
 	
 	private class Rectangle {
@@ -98,6 +101,7 @@ public class HitBox extends Component {
 									  p.y - height/2f * (float)Math.cos(r) + width/2f * (float)Math.sin(r));
 		}
 		
+		// Returns an array of Rectangle's edge normals
 		public PVector[] getAxes() {
 			PVector[] axes = new PVector[4];
 			for (int i = 0; i < 4; i++) {
@@ -108,6 +112,7 @@ public class HitBox extends Component {
 			return axes;
 		}
 		
+		// Projects the Rectangle onto a normal vector
 		public float[] project(PVector axis) {
 			float[] minMax = new float[2];
 			minMax[0] = PVector.dot(axis, vertices[0]); // Min

@@ -9,16 +9,20 @@ public class GameScreen {
 	public ArrayList<Entity> entities;
 	public ArrayList<Entity> uiElements;
 	public Camera mainCamera;
+	
 	private Transform cameraTransform;
+	private ArrayList<Entity> removeEntities;
 	
 	public GameScreen() {
 		mainCamera = new Camera();
 		cameraTransform = mainCamera.getComponent(Transform.class);
 		entities = new ArrayList<Entity>();
+		removeEntities = new ArrayList<Entity>();
 		uiElements = new ArrayList<Entity>();
 	}
 	
 	public void update(float deltaTime) {
+		// Update entities
 		mainCamera.update(deltaTime);
 		for (Entity e : entities) {
 			e.update(deltaTime);
@@ -27,6 +31,17 @@ public class GameScreen {
 		for (Entity e : uiElements) {
 			e.update(deltaTime);
 		}
+		
+		// Remove entities marked for deletion
+		for (Entity e : removeEntities) {
+			entities.remove(e);
+			uiElements.remove(e);
+		}
+		removeEntities.clear();
+	}
+	
+	public void destroyEntity(Entity e) {
+		removeEntities.add(e);
 	}
 	
 	public void render() {

@@ -37,7 +37,7 @@ public class TestScreen extends GameScreen {
 			
 			addComponent(new SpriteRenderer(sprite));
 			addComponent(new ShipMovement());
-			addComponent(new HitBox(0, 0, sprite.width, sprite.height, "ship"));
+			addComponent(new HitBox(0, 0, sprite.width-50, sprite.height-80, "ship"));
 			addComponent(new HitBox(sprite.width, 0, sprite.width, sprite.height, "sensor"));
 			// (Transform added automatically)
 			
@@ -51,13 +51,15 @@ public class TestScreen extends GameScreen {
 		@Override
 		public void onCollision(HitBox thisBox, HitBox otherBox) {
 			if (otherBox.tag.equals("ship") && thisBox.tag.equals("ship")) {
-				getComponent(SpriteRenderer.class).g = ~getComponent(SpriteRenderer.class).g;
+				// KABOOM
+				this.destroy();
+				otherBox.entity.destroy();
 				
 			} else if (thisBox.tag.equals("sensor")) {
 				if (otherBox.tag.equals("ship")) {
 					// Found a ship! Make it blink
 					SpriteRenderer r = otherBox.entity.getComponent(SpriteRenderer.class);
-					r.a = ~r.a;
+					r.g = ~r.g;
 				}
 			}
 		}

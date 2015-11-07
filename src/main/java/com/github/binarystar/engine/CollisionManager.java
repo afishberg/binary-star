@@ -5,16 +5,23 @@ import java.util.*;
 public class CollisionManager {
 
 	private ArrayList<HitBox> colliders;
+	private ArrayList<HitBox> toDelete;
 	
 	public CollisionManager() {
 		colliders = new ArrayList<HitBox>();
+		toDelete = new ArrayList<HitBox>();
 	}
 	
 	public void add(HitBox h) {
 		colliders.add(h);
 	}
 	
+	public void remove(HitBox h) {
+		toDelete.add(h);
+	}
+	
 	public void update() {
+		// Test for overlapping with other HitBox
 		for (HitBox h1 : colliders) {
 			for (HitBox h2 : colliders) {
 				// Don't let things collide with themselves
@@ -27,6 +34,12 @@ public class CollisionManager {
 				}
 			}
 		}
+		
+		// Destroy HitBoxes marked for deletion
+		for (HitBox h : toDelete) {
+			colliders.remove(h);
+		}
+		toDelete.clear();
 	}
 	
 }

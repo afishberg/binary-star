@@ -16,6 +16,11 @@ public abstract class Component {
 	}
 	
 	/**
+	 * Called when the component is being prepared for deletion
+	 */
+	public void destroy() { }
+	
+	/**
 	 * Called after init; use this when you want to find other components so they're initialized properly first
 	 */
 	public abstract void start();
