@@ -39,7 +39,7 @@ public class ShipWeapon extends Component {
 			super();
 			
 			addComponent(new SpriteRenderer(bullet));
-			addComponent(new HitBox(0, 0, 16, 16, "bullet" + tag));
+			addComponent(new HitBox(0, 0, 16, 16, "bullet" + tag, false));
 			
 			init();
 			

@@ -1,7 +1,7 @@
 package com.github.binarystar.engine;
 
+import java.util.*;
 import com.github.binarystar.Main;
-
 import processing.core.*;
 
 public class HitBox extends Component {
@@ -12,17 +12,34 @@ public class HitBox extends Component {
 	
 	private int offsetX, offsetY;
 	
+	public boolean discrete;
 	public String tag;
 	
-	public HitBox(int offsetX, int offsetY, int w, int h, String tag) {
+	/**
+	 * HitBox constructor
+	 * @param offsetX The x amount the HitBox should be offset compared to its entity's transform
+	 * @param offsetY The y amount the HitBox should be offset compared to its entity's transform
+	 * @param w The width of the HitBox
+	 * @param h The height of the HitBox
+	 * @param tag Identifier associated with the HitBox
+	 * @param discrete True if the HitBox should only check for overlaps when the user defines, 
+	 * 		false if the CollisionManager should trigger its onCollision() method
+	 */
+	public HitBox(int offsetX, int offsetY, int w, int h, String tag, boolean discrete) {
 		box = new Rectangle(new PVector(), w, h);
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
 		this.tag = tag;
+		this.discrete = discrete;
 	}
 	
 	public void start() {
 		this.transform = entity.getComponent(Transform.class);
+		PVector off = new PVector(offsetX * (float)Math.cos(transform.rotation) 
+										- offsetY * (float)Math.sin(transform.rotation), 
+								  offsetY * (float)Math.cos(transform.rotation) 
+								  		+ offsetX * (float)Math.sin(transform.rotation));
+		box.updateTransform(PVector.add(transform.position, off), transform.rotation);
 		Main.Collisions.add(this);
 	}
 	
@@ -36,6 +53,14 @@ public class HitBox extends Component {
 								  offsetY * (float)Math.cos(transform.rotation) 
 								  		+ offsetX * (float)Math.sin(transform.rotation));
 		box.updateTransform(PVector.add(transform.position, off), transform.rotation);
+	}
+	
+	public HitBox getOverlap() {
+		return Main.Collisions.getOverlap(this);
+	}
+	
+	public ArrayList<HitBox> getAllOverlaps() {
+		return Main.Collisions.getAllOverlaps(this);
 	}
 	
 	// Uses separating axis theorem to test for whether two HitBoxes overlap
