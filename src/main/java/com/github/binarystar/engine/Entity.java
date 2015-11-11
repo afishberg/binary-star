@@ -97,11 +97,4 @@ public class Entity {
 		components.add(comp);
 		return comp;
 	}
-	
-	/**
-	 * Called if the Entity has a HitBox component attached to it and it overlaps with another HitBox.
-	 * @param box1 The first HitBox in the collision
-	 * @param box2 The second HitBox in the collision
-	 */
-	public void onCollision(HitBox box1, HitBox box2) { }
 }

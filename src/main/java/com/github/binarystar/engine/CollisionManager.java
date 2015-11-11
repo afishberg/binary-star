@@ -6,10 +6,12 @@ public class CollisionManager {
 
 	private ArrayList<HitBox> colliders;
 	private ArrayList<HitBox> toDelete;
+	private ArrayList<HitBox> toAdd;
 	
 	public CollisionManager() {
 		colliders = new ArrayList<HitBox>();
 		toDelete = new ArrayList<HitBox>();
+		toAdd = new ArrayList<HitBox>();
 	}
 	
 	/**
@@ -17,7 +19,7 @@ public class CollisionManager {
 	 * @param h The HitBox to add
 	 */
 	public void add(HitBox h) {
-		colliders.add(h);
+		toAdd.add(h);
 	}
 	
 	/**
@@ -29,23 +31,11 @@ public class CollisionManager {
 	}
 	
 	public void update() {
-		// Test for overlapping with other HitBox
-		for (HitBox h1 : colliders) {
-			// Ignore discrete HitBoxes
-			if (h1.discrete)
-				continue;
-			
-			for (HitBox h2 : colliders) {
-				// Don't let things collide with themselves nor with discrete HitBoxes
-				if (h1 == h2 || h1.entity == h2.entity || h2.discrete)
-					continue;
-				
-				// Trigger onCollision() if HitBoxes overlap
-				if (h1.intersect(h2)) {
-					h1.entity.onCollision(h1, h2);
-				}
-			}
+		// Add new HitBoxes to main list
+		for (HitBox h : toAdd) {
+			colliders.add(h);
 		}
+		toAdd.clear();
 		
 		// Destroy HitBoxes marked for deletion
 		for (HitBox h : toDelete) {
@@ -61,10 +51,6 @@ public class CollisionManager {
 	 */
 	public HitBox getOverlap(HitBox h1) {
 		for (HitBox h2 : colliders) {
-			// Ignore discrete HitBoxes
-			if (h2.discrete)
-				continue;
-				
 			// Don't let things collide with themselves
 			if (h1 == h2 || h1.entity == h2.entity)
 				continue;
@@ -85,10 +71,6 @@ public class CollisionManager {
 	public ArrayList<HitBox> getAllOverlaps(HitBox h1) {
 		ArrayList<HitBox> result = new ArrayList<HitBox>();
 		for (HitBox h2 : colliders) {
-			// Ignore discrete HitBoxes
-			if (h2.discrete)
-				continue;
-				
 			// Don't let things collide with themselves
 			if (h1 == h2 || h1.entity == h2.entity)
 				continue;

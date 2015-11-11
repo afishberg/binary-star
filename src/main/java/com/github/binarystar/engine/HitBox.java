@@ -12,7 +12,6 @@ public class HitBox extends Component {
 	
 	private int offsetX, offsetY;
 	
-	public boolean discrete;
 	public String tag;
 	
 	/**
@@ -22,15 +21,12 @@ public class HitBox extends Component {
 	 * @param w The width of the HitBox
 	 * @param h The height of the HitBox
 	 * @param tag Identifier associated with the HitBox
-	 * @param discrete True if the HitBox should only check for overlaps when the user defines, 
-	 * 		false if the CollisionManager should trigger its onCollision() method
 	 */
-	public HitBox(int offsetX, int offsetY, int w, int h, String tag, boolean discrete) {
+	public HitBox(int offsetX, int offsetY, int w, int h, String tag) {
 		box = new Rectangle(new PVector(), w, h);
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
 		this.tag = tag;
-		this.discrete = discrete;
 	}
 	
 	public void start() {
@@ -91,6 +87,7 @@ public class HitBox extends Component {
 		return p1[0]>=p2[0] && p1[0]<=p2[1] || p2[0]>=p1[0] && p2[0]<=p1[1];
 	}
 	
+	/*
 	public void render() {
 		// Debug drawing each rectangle point
 		Main.Processing.pushMatrix();
@@ -100,6 +97,7 @@ public class HitBox extends Component {
 		Main.Processing.ellipse(box.vertices[3].x, box.vertices[3].y, 10, 10);
 		Main.Processing.popMatrix();
 	}
+	*/
 	
 	
 	private class Rectangle {

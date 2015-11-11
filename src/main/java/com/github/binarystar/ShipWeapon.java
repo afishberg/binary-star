@@ -1,6 +1,7 @@
 package com.github.binarystar;
 
 import com.github.binarystar.engine.*;
+
 import processing.core.*;
 
 public class ShipWeapon extends Component {
@@ -39,7 +40,7 @@ public class ShipWeapon extends Component {
 			super();
 			
 			addComponent(new SpriteRenderer(bullet));
-			addComponent(new HitBox(0, 0, 16, 16, "bullet" + tag, false));
+			addComponent(new HitBox(0, 0, 16, 16, "bullet" + tag));
 			
 			init();
 			

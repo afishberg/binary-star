@@ -9,7 +9,7 @@ public class ShipControls extends Component {
 	private ShipEngine movement;
 	private ShipWeapon weapon;
 	
-	private boolean selected;
+	public boolean selected;
 	private boolean ePressed;
 	
 	public ShipControls() {
